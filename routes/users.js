@@ -59,23 +59,23 @@ module.exports = (db) => {
       }
     })
   })
-  router.get("/login/:id",(req, res) => {
-    const id = req.params.id;
-    req.session.user_name = id;
-    return res.send({session: req.session.user_name})
+  // router.get("/login/:id",(req, res) => {
+  //   const id = req.params.id;
+  //   req.session.user_name = id;
+  //   return res.send({session: req.session.user_name})
 
-  })
+  // })
 
-  // check session 
-  router.post("/logout", (req, res) => {
-    req.session = null;
-    return res.send({session : req.session.user_name})
-  })
+  // // check session 
+  // router.post("/logout", (req, res) => {
+  //   req.session = null;
+  //   return res.send({session : req.session.user_name})
+  // })
 
-  router.get("/session", (req,res) => {
-    console.log(req.session.user_name)
-    return res.send({session : req.session.user_name})
-  })
+  // router.get("/session", (req,res) => {
+  //   console.log(req.session.user_name)
+  //   return res.send({session : req.session.user_name})
+  // })
 
   return router;
 };

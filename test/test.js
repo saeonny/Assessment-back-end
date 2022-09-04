@@ -109,5 +109,47 @@ describe('Server Test',()=> {
   
   })
 
+  describe("CRUD Tweet : Create", ()=> {
+    it ("It should possible to create new tweet", (done) => {
+      chai.request(server)
+      .post("/tweets/create")
+      .send({writter:'sae',title: "testing", content : "testing-testing"})
+      .end((err,res)=> {
+        res.should.have.status(200);
+        done()
+      })
+      
+    })
+    it ("After create new tweet, it should be added to tweets ", (done) => {
+      chai.request(server)
+      .get("/tweets")
+      .end((err,res)=> {
+        res.body.length.should.be.eql(3);
+        res.body[2].title.should.be.eql("testing")
+    
+        
+        done()
+      })
+      
+    })
+
+  })
+
+  describe("CRUD Tweet : Read", ()=> {
+    it ("It should possible to read tweet by id", (done) => {
+      chai.request(server)
+      .get("/tweets/3")
+     
+      .end((err,res)=> {
+        res.should.have.status(200);
+        res.body.title.should.be.eql("testing")
+        done()
+      })
+      
+    })
+ 
+  })
+
+
 
 })

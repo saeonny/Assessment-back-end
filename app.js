@@ -3,8 +3,8 @@ const express = require('express');
 const app = express();
 const morgan = require("morgan");
 const db = require('./configs/db.configs')
-const usersRouter = require('./routes/users')
-const cookieSession = require("cookie-session")
+
+
 const bodyParser = require("body-parser")
 const session = require('express-session')
 
@@ -24,8 +24,10 @@ app.use(session({
   cookie: {secure: true}
 }))
 
-
+const usersRouter = require('./routes/users')
+const tweetsRouter = require('./routes/tweets')
 app.use("/users", usersRouter(db))
+app.use("/tweets",tweetsRouter(db))
 
 
 app.listen(port, () => {
