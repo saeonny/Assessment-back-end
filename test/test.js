@@ -177,6 +177,30 @@ describe('Server Test',()=> {
     })
  
   })
+
+  describe("CRUD Tweet : Delete", ()=> {
+    it ("It should possible to delete tweets", (done) => {
+      chai.request(server)
+      .post("/tweets/delete/3")
+      .end((err,res)=> {
+       
+        done()
+      })
+      
+    })
+
+    it ("Tweet should be deleted from tweets", (done) => {
+      chai.request(server)
+      .get("/tweets")
+     
+      .end((err,res)=> {
+        res.body.length.should.be.eql(2)
+        done()
+      })
+      
+    })
+ 
+  })
   
 
 

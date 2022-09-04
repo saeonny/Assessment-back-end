@@ -59,6 +59,17 @@ module.exports = (db) => {
 
   })
 
+  // delete
+  router.post("/delete/:id", (req,res) => {
+    const id = req.params.id
+    const query = `DELETE FROM tweets WHERE id = $1 `
+
+    db.query(query,[id]).then(data=> {
+      res.send(data.rows[0])
+    })
+    .catch(e => res.send(e))
+  })
+
 
 
   return router;
