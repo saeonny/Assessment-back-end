@@ -1,7 +1,7 @@
 const chai = require("chai");
 const server = require("../app");
 const chaiHttp = require('chai-http');
-const {assert} = require('chai')
+const {assert, expect} = require('chai')
 chai.use(chaiHttp)
 const should = chai.should()
 
@@ -90,9 +90,23 @@ describe('Server Test',()=> {
       })
       
     })
- 
-  
 
+    it ("It should not able to login with non-matched user_name and password", (done) => {
+      chai.request(server)
+      .post("/users/login")
+      .send({user_name:'sae', password: '12345'})
+      .end((err,res)=> {
+        res.should.have.status(200);
+        res.body.error.should.be.eql("not match")
+        
+        
+        
+        done()
+      })
+      
+    })
+   
+  
   })
 
 

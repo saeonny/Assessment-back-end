@@ -11,20 +11,7 @@ module.exports = (db) => {
     })
   })
   
-  // can check password and check user is exists or not
-  router.get("/:user_name",(req,res) => {
-    const user_name = req.params.user_name
-    const query = `Select password from users where user_name = $1`
-    db.query(query,[user_name])
-    .then(data => {
-      if(data.rows.length === 0) {
-        return res.send({error : "user_name does not extis"})
-      }
-      else {
-        res.send (data.rows[0])
-      }
-    })
-  })
+
 
   //TASK1. user registration using unique username and a password 
   // 1. user_name should unique => user_name is primary key
@@ -72,7 +59,23 @@ module.exports = (db) => {
       }
     })
   })
-  
+  router.get("/login/:id",(req, res) => {
+    const id = req.params.id;
+    req.session.user_name = id;
+    return res.send({session: req.session.user_name})
+
+  })
+
+  // check session 
+  router.post("/logout", (req, res) => {
+    req.session = null;
+    return res.send({session : req.session.user_name})
+  })
+
+  router.get("/session", (req,res) => {
+    console.log(req.session.user_name)
+    return res.send({session : req.session.user_name})
+  })
 
   return router;
 };
