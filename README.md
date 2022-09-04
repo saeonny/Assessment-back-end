@@ -21,5 +21,5 @@ follow .env.exmple to create .env file
 
 5. start test
 `npm run test`
-** everytime run test, you should do db:reset first
+**  you should do db:reset first to run test
 
