@@ -11,5 +11,9 @@ module.exports = (db) => {
     })
   })
 
+  //TASK1. user registration using unique username and a password 
+  // 1. username should unique
+  // 2. then save password 
+
   return router;
 };
