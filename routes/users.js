@@ -53,5 +53,26 @@ module.exports = (db) => {
     })
   })
 
+  //Login
+  router.post("/login",(req, res) => {
+    const user_name = req.body.user_name;
+    const password = req.body.password;
+
+    const loginCheck = "Select * from users where user_name = $1 AND password = $2;"
+
+    db.query(loginCheck,[user_name,password])
+    .then(data => {
+      if(data.rows.length === 1 ) {
+        req.session.user_name = user_name;
+        console.log("cookie-session",req.session.user_name);
+        return res.send(data.rows)
+      }
+      else {
+        return res.send({error : "not match"})
+      }
+    })
+  })
+  
+
   return router;
 };

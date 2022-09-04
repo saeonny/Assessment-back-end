@@ -72,6 +72,27 @@ describe('Server Test',()=> {
       
     }) 
 
+  
+
+  })
+  describe("Login with matched user_name and password", ()=> {
+    it ("It should able to login with matched user_name and password", (done) => {
+      chai.request(server)
+      .post("/users/login")
+      .send({user_name:'sae', password: '1234'})
+      .end((err,res)=> {
+        res.should.have.status(200);
+        
+        res.body[0].user_name.should.be.eql("sae");
+        res.body[0].password.should.be.eql('1234')
+        
+        done()
+      })
+      
+    })
+ 
+  
+
   })
 
 
