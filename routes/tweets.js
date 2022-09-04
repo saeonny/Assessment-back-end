@@ -39,6 +39,26 @@ module.exports = (db) => {
 
   })
 
+   // update
+   // id and writter cant be changed
+  
+   router.post("/edit/:id", (req,res) => {
+    
+    const id = req.params.id
+  
+    const content = req.body.content;
+    console.log("cont",content)
+
+    const query = `UPDATE tweets set content = $1, edited_time = Now() where id = $2 returning * ;`
+
+    db.query(query,[content,id])
+    .then(data=> {
+      res.send(data.rows[0])
+    })
+    .catch(e => res.send(e))
+
+  })
+
 
 
   return router;

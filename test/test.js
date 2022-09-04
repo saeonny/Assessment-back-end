@@ -126,6 +126,7 @@ describe('Server Test',()=> {
       .end((err,res)=> {
         res.body.length.should.be.eql(3);
         res.body[2].title.should.be.eql("testing")
+        res.body[2].id.should.be.eql(3)
     
         
         done()
@@ -149,6 +150,34 @@ describe('Server Test',()=> {
     })
  
   })
+
+
+
+  describe("CRUD Tweet : Update", ()=> {
+    it ("It should possible to update tweet", (done) => {
+      chai.request(server)
+      .post("/tweets/edit/3")
+      .send({content : "updated-testing"})
+      .end((err,res)=> {
+       
+        done()
+      })
+      
+    })
+
+    it ("Tweet should be updated", (done) => {
+      chai.request(server)
+      .get("/tweets/3")
+     
+      .end((err,res)=> {
+        res.body.content.should.be.eql("updated-testing")
+        done()
+      })
+      
+    })
+ 
+  })
+  
 
 
 
