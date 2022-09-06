@@ -1,8 +1,8 @@
 DROP TABLE IF EXISTS likes CASCADE;
 
 CREATE TABLE likes (
-   tweet_id INTEGER REFERENCES tweets not null,
-   user_name VARCHAR REFERENCES users NOT NULL,
+   tweet_id INTEGER REFERENCES tweets  on DELETE CASCADE,
+   user_name VARCHAR REFERENCES users  on DELETE CASCADE,
    PRIMARY key (tweet_id, user_name)
 
 

@@ -40,7 +40,8 @@ module.exports = (db) => {
   })
 
    // update
-   // id and writter cant be changed
+   // id  writter and title cant be changed
+   // only content can be updated
   
    router.post("/edit/:id", (req,res) => {
     
@@ -65,6 +66,34 @@ module.exports = (db) => {
     const query = `DELETE FROM tweets WHERE id = $1 `
 
     db.query(query,[id]).then(data=> {
+      res.send(data.rows[0])
+    })
+    .catch(e => res.send(e))
+  })
+
+  // Like tweets
+  // at the frond => if the tweet is liked => click  ❤️ button => post unlike 
+  //              => if the tweet is unliked => click ❤️ button => post like 
+
+  router.post("/like", (req,res) => {
+    const tweet_id = req.params.tweet_id
+    const user_name = req.params.user_name
+
+    const query = `INSERT INTO likes (tweet_id, user_name ) VALUES ($1 , $2) returning *;`
+
+    db.query(query,[tweet_id,user_name]).then(data => {
+      res.send(data.rows[0])
+    })
+    .catch(e => res.send(e))
+
+  })
+
+  router.post ("/unlike", (req,res) => {
+    const tweet_id = req.params.tweet_id
+    const user_name = req.params.user_name
+
+    const query = `DELETE FROM tweets WHERE tweet_id = $1 AND user_name = $2 returning * `
+    db.query(query,[tweet_id,user_name]).then(data => {
       res.send(data.rows[0])
     })
     .catch(e => res.send(e))
