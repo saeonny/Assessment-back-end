@@ -116,6 +116,7 @@ describe('Server Test',()=> {
       .send({writter:'sae',title: "testing", content : "testing-testing"})
       .end((err,res)=> {
         res.should.have.status(200);
+        console.log(res.body)
         done()
       })
       

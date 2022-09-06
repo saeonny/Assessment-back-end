@@ -100,6 +100,57 @@ module.exports = (db) => {
   })
 
 
+  // retweet Process : post /retweet with params 1. original tweet_id, user_name, and added_content(optional)
+  // 1. get the original tweet's title and content by original tweet's id (retweet is handled on the original tweet)
+  // 2. if there are something to add on the original tweet's content => post /retweet  with added_content param
+  // 3. add the retweeted post into tweets 
+  // 4. add the original tweet's id and retweeted tweet's id into retweets 
+
+  router.post ("/retweet",(req,res)=> {
+    // original tweet_id
+    const tweet_id = req.params.tweet_id
+    // this could be null => retweet with added_content + original content or retweet with only original content 
+    const added_content = req.params.added_content
+    const user_name = req.params.user_name
+
+    let title = ''
+    let content = ''
+
+    const findorigintweet = `SELECT * from tweets where id = $1`
+    //find the original tweet
+    db.query(findorigintweet,[tweet_id]).then(data => {
+      title = data.rows[0].title
+      content = data.rows[0].content
+
+      if (added_content) {
+        content += added_content
+      }
+
+    }).then( data1 => {
+      const addToTweets = `INSERT INTO tweets (title, content, writter ) VALUES ($1, $2, $3) returning * ;` 
+      // add retweeted tweet into tweets
+      db.query(addToTweets, [title, content, user_name])
+      .then(data2 => {
+        const retweeted_id = data2.rows[0].id
+        const addtoRetweet = `INSERT INTO retweets (oiginal_tweeted_id, retweeted_id) values ($1,$2) returning * ;`
+        
+      // add relation : original_tweet <=> retweeted_tweet into retweets 
+        db.query(addtoRetweet, [tweet_id,retweeted_id]).then(data3 => {
+          res.send(data3.rows[0])
+        })
+
+      })
+    }
+      
+
+    )
+
+
+
+
+  })
+
+
 
   return router;
 };
